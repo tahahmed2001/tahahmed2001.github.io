@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>HTML 5 Boilerplate</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+    </head>
+    <style> 
+    rect {fill: lightblue; stroke: black; }
+    circle {fill: lightblue; stroke: black;} 
+    div.tooltip {
+        opacity: 0;
+        position: absolute;
+        text-align: center;
+        width: 250px; 
+        height: auto;
+        background: lightgray;
+        border: 0px;
+        pointer-events: none;
+    }
+    </style>
+    <body onload='init()'>
+        <h1>Car Brands</h1>
+        <p fill="black">This graph shows cars produced by brand.</p>
+        <svg width="1200" height="670">
+        </svg>
+        <p>
+            <a href="start.html">Scatter Plot</a>
+            
+        </p>
+        <script>
+            async function init() {
+                const data = await d3.csv('https://flunky.github.io/cars2017.csv')
+
+
+                var cars = {};
+                cars["Make"] = []
+                cars["Count"] = []
+
+                for (i = 0; i < data.length; i++) {
+                    if (!(cars["Make"].includes(data[i].Make))) {
+                        cars["Make"].push(data[i].Make);
+                    }
+                }
+                console.log(cars["Make"])
+
+                var brands = {};
+                
+                cars["Make"].forEach((d,i)=> {
+                    brands[d] = 0;
+                })
+                console.log(brands)
+
+                for (i = 0; i < data.length; i++) {
+                    brands[data[i].Make] += 1; 
+                }
+                console.log(brands)
+
+                for (i = 0; i < cars["Make"].length; i++) {
+                    var now = cars["Make"][i]
+                    console.log(now)
+                    cars["Count"].push(brands[now])
+                }
+                console.log(cars["Make"])
+                console.log(cars["Count"])
+
+
+                var x = d3.scaleOrdinal().domain(cars["Make"]).range([0, width]);
+                var y = d3.scaleLinear().domain([0,9]).range([height, 0]);
+
+                
+
+                var margin = {top:50, right:50, bottom:50, left:50 }, width=200, height=200;
+
+                // var x = d3.scaleOrdinal().domain(["Acura","Alfa Romeo", "Aston Martin", "Audi", ""]).range([0, width]);
+                // var y = d3.scaleLinear().domain([0,42]).range([height, 0]);
+
+                var svg = d3.select("svg");
+
+                var bars = svg.append("g")
+                .attr("transform","translate("+margin.left+","+margin.top+")");
+
+                svg.selectAll('rect')
+                .data(cars)
+                .enter()
+                .append('rect')
+                .attr('x', function(d,i) {return x(i);})
+                .attr('y', function(d,i) {return y(d["Count"]);})
+                //.attr('width', x.bandwidth())
+                .attr('height',function(d,i) {return height - y(d["Count"]);})
+
+                //svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")").call(d3.axisLeft(y));
+                //svg.append("g").attr("transform","translate("+margin.left+","+(margin.top+height)+")").call(d3.axisBottom(x));
+            }
+        </script>
+    </body>
+</html>
