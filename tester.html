@@ -10,44 +10,51 @@
     </head>
 
     <style> 
-    path {stroke: black;}
-    div.tooltip {
-        opacity: 0;
-        position: absolute;
-        text-align: center;
-        width: 250px; 
-        height: auto;
-        background: lightgray;
-        border: 0px;
-        pointer-events: none;
-    }
+        path {stroke: black;}
+        div.tooltip {
+            opacity: 0;
+            position: absolute;
+            text-align: center;
+            width: auto; 
+            height: auto;
+            background: lightgray;
+            border: 0px;
+            pointer-events: none;
+        }
     </style>
 
     <body onload='init()'>
-        <h1>Average City MPG vs. Average Highway MPG</h1>
-        <a href="start.html">Scatter Plot</a>
-        <svg width="500" height="500">
-            <text x="200" y="200" fill="black">Gasoline</text>
+        <h1>Number of cars by fuel-type</h1>
+
+        <p>This pie chart shows how many cars from our dataset used a respective fuel-type in 2017.</p>
+
+        <svg width="500" height="500"> 
+            <text x="400" y="400" fill="black">Gasoline</text>
+            <text x="200" y="40" fill="black">Deisel</text>
+            <text x="100" y="70" fill="black">Electric</text>
         </svg>
+
+        <p>
+            <a href="index.html">Scatter Plot</a>
+            <a href="cars.html">Bar Chart</a>
+        </p>
+
         <script>
             async function init() {
-                const data = await d3.csv('https://flunky.github.io/cars2017.csv')
-
-                const now = [130,10,6];
-                const color = ['tan','lightgreen','lightblue'];
+                //const data = await d3.csv('https://flunky.github.io/cars2017.csv')
+                const data = [130,10,6];
+                const color = ['tan','lightblue','lightgreen'];
 
                 var pie = d3.pie().value(function(d) {return d.value;});
-
                 var arc = d3.arc().innerRadius(0).outerRadius(200);
-
                 var svg = d3.select("svg")
                 .append("g").attr("transform", "translate("+250+","+250+")");
 
-                var tooltip = d3.select("body").append("div")
-                            .attr("class", "tooltip")
-                            .style("opacity", 0);
+                var dat = pie(d3.entries(data));
 
-                var dat = pie(d3.entries(now));
+                var tooltip = d3.select("body").append("div")
+                                .attr("class", "tooltip")
+                                .style("opacity", 0);
 
                 d3.select("g").selectAll("path")
                 .data(dat)
@@ -55,7 +62,15 @@
                 .append("path")
                 .attr("d",arc)
                 .attr("fill", function(d,i){return(color[i]);})
-
+                .on ("mouseover", function(i,d) {
+                    tooltip.style("opacity", 1)
+                        .style("left",(event.pageX)+"px")
+                        .style("top",(event.pageY)+"px")
+                        .html(data[d]);
+                })
+                .on ("mouseout", function(i,d) {
+                    tooltip.style("opacity", 0)
+                })
             }
         </script>
     </body>

@@ -9,27 +9,27 @@
         <script src="https://d3js.org/d3.v7.min.js"></script>
     </head>
     <style> 
-    rect {fill: lightblue; stroke: black; }
-    circle {fill: lightblue; stroke: black;} 
-    div.tooltip {
-        opacity: 0;
-        position: absolute;
-        text-align: center;
-        width: 250px; 
-        height: auto;
-        background: lightgray;
-        border: 0px;
-        pointer-events: none;
-    }
+        rect {fill: lightblue; stroke: black; }
+        circle {fill: lightblue; stroke: black;} 
+        div.tooltip {
+            opacity: 0;
+            position: absolute;
+            text-align: center;
+            width: 250px; 
+            height: auto;
+            background: lightgray;
+            border: 0px;
+            pointer-events: none;
+        }
     </style>
     <body onload='init()'>
-        <h1>Car Brands</h1>
-        <p fill="black">This graph shows cars produced by brand.</p>
-        <svg width="1200" height="670">
+        <h1>Number of Cars Made</h1>
+        <p fill="black">This graph shows the number of cars that were manufactured by several different car companies in 2017.</p>
+        <svg width="1200" height="700">
         </svg>
         <p>
-            <a href="start.html">Scatter Plot</a>
-            
+            <a href="index.html">Scatter Plot</a>
+            <a href="tester.html">Pie Chart</a>
         </p>
         <script>
             async function init() {
@@ -45,55 +45,85 @@
                         cars["Make"].push(data[i].Make);
                     }
                 }
-                console.log(cars["Make"])
+                //console.log(cars["Make"])
 
                 var brands = {};
                 
                 cars["Make"].forEach((d,i)=> {
                     brands[d] = 0;
                 })
-                console.log(brands)
+                //console.log(brands)
 
                 for (i = 0; i < data.length; i++) {
                     brands[data[i].Make] += 1; 
                 }
-                console.log(brands)
+                //console.log(brands)
 
                 for (i = 0; i < cars["Make"].length; i++) {
                     var now = cars["Make"][i]
-                    console.log(now)
+                    //console.log(now)
                     cars["Count"].push(brands[now])
                 }
-                console.log(cars["Make"])
-                console.log(cars["Count"])
+                //console.log(cars["Make"])
+                //console.log(cars["Count"])
+
+                var xdomain = []
+                for (i=0;i<44;i++){
+                    xdomain.push(i)
+                }
 
 
-                var x = d3.scaleOrdinal().domain(cars["Make"]).range([0, width]);
-                var y = d3.scaleLinear().domain([0,9]).range([height, 0]);
+                var x = d3.scaleBand().domain(xdomain).range([0, 1000]);
+                var y = d3.scaleLinear().domain([0,9]).range([570, 0]);
 
-                
+                //var margin = {top:50, right:50, bottom:50, left:50 }, width=1000, height=570;
 
-                var margin = {top:50, right:50, bottom:50, left:50 }, width=200, height=200;
+                var svg = d3.select("svg").append("g")
+                .attr("transform","translate("+50+","+50+")");
 
-                // var x = d3.scaleOrdinal().domain(["Acura","Alfa Romeo", "Aston Martin", "Audi", ""]).range([0, width]);
-                // var y = d3.scaleLinear().domain([0,42]).range([height, 0]);
+                var carsdata = Object.entries(brands);
+                //console.log(carsdata) 
 
-                var svg = d3.select("svg");
+                var tooltip = d3.select("body").append("div")
+                                .attr("class", "tooltip")
+                                .style("opacity", 0);
 
-                var bars = svg.append("g")
-                .attr("transform","translate("+margin.left+","+margin.top+")");
-
-                svg.selectAll('rect')
-                .data(cars)
+                d3.select("g")
+                .selectAll('rect')
+                .data(carsdata)
                 .enter()
                 .append('rect')
-                .attr('x', function(d,i) {return x(i);})
-                .attr('y', function(d,i) {return y(d["Count"]);})
-                //.attr('width', x.bandwidth())
-                .attr('height',function(d,i) {return height - y(d["Count"]);})
+                .attr('x', function(d,i) {
+                    return x(i);
+                    //console.log(d)
+                })
+                .attr('y', function(d,i) {
+                    //console.log(d[1])
+                    return y(d[1]);
+                })
+                .attr('width', x.bandwidth())
+                .attr('height',function(d,i) {return 570 - y(d[1]);})
+                .on ("mouseover", function(i,d) {
+                    console.log(carsdata)
+                    tooltip.style("opacity", 1)
+                        .style("left",(event.pageX)+"px")
+                        .style("top",(event.pageY)+"px")
+                        .html();
+                        //console.log(d[1])
+                })
+                .on ("mouseout", function(i,d) {
+                    tooltip.style("opacity", 0)
+                })
 
-                //svg.append("g").attr("transform","translate("+margin.left+","+margin.top+")").call(d3.axisLeft(y));
-                //svg.append("g").attr("transform","translate("+margin.left+","+(margin.top+height)+")").call(d3.axisBottom(x));
+                svg.append("g").attr("transform","translate("+0+","+0+")").call(d3.axisLeft(y));
+
+                svg.append("g").attr("transform","translate("+0+","+570+")").call(d3.axisBottom(x).tickFormat(function(d,i){ return cars["Make"][i]}))
+                .selectAll("text")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-45)");
+                
             }
         </script>
     </body>
