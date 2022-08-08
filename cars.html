@@ -15,13 +15,14 @@
             opacity: 0;
             position: absolute;
             text-align: center;
-            width: 250px; 
+            width: auto; 
             height: auto;
             background: lightgray;
             border: 0px;
             pointer-events: none;
         }
     </style>
+
     <body onload='init()'>
         <h1>Number of Cars Made</h1>
         <p fill="black">This graph shows the number of cars that were manufactured by several different car companies in 2017.</p>
@@ -108,7 +109,7 @@
                     tooltip.style("opacity", 1)
                         .style("left",(event.pageX)+"px")
                         .style("top",(event.pageY)+"px")
-                        .html();
+                        .html(d[0]+": "+d[1]);
                         //console.log(d[1])
                 })
                 .on ("mouseout", function(i,d) {
