@@ -15,28 +15,30 @@
             opacity: 0;
             position: absolute;
             text-align: center;
-            width: auto; 
+            width: 70px; 
             height: auto;
-            background: lightgray;
+            background: white;
             border: 0px;
             pointer-events: none;
+            font-size: 40px;
         }
     </style>
 
     <body onload='init()'>
         <h1>Number of cars by fuel-type</h1>
 
-        <p>This pie chart shows how many cars from our dataset used a respective fuel-type in 2017.</p>
+        <p>This pie chart shows how many cars from our dataset used a certain fuel-type in 2017.</p>
+        <p>(Hover over the chart to see the actual number.)</p>
 
         <svg width="500" height="500"> 
             <text x="400" y="400" fill="black">Gasoline</text>
             <text x="200" y="40" fill="black">Deisel</text>
             <text x="100" y="70" fill="black">Electric</text>
         </svg>
-
+        <p>Additional charts here:</p>
         <p>
-            <a href="index.html">Scatter Plot</a>
-            <a href="cars.html">Bar Chart</a>
+            [<a href="index.html">Fuel Efficiency</a>]
+            [<a href="cars.html">Cars by Manufacturer</a>]
         </p>
 
         <script>

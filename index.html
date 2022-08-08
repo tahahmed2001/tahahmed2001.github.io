@@ -15,7 +15,7 @@
             opacity: 0;
             position: absolute;
             text-align: center;
-            width: 250px; 
+            width: auto; 
             height: auto;
             background: lightgray;
             border: 0px;
@@ -26,14 +26,14 @@
     <body onload='init()'>
         <h1>Average City MPG vs. Average Highway MPG</h1>
 
-        <p fill="black">This graph shows a relationship between City and Highway MPG by respective car brands in 2017; the size of the dots indicates the number of cylinders.</p>
+        <p fill="black">This graph shows a relationship between average City and Highway MPG in 2017, by each car listed in our dataset; the size of the dots is proportional to the number of engine cylinders.</p>
         <p>(Hover over the dots to reveal additional information.)</p>
         <svg width="1200" height="670">
         </svg>
-
+        <p>Additional charts here:</p>
         <p>
-            <a href="tester.html">Pie Chart</a>
-            <a href="cars.html">Bar Chart</a>
+            [<a href="tester.html">Fuel Types</a>]
+            [<a href="cars.html">Cars by Manufacturer</a>]
         </p>
 
         <script>
@@ -59,7 +59,7 @@
                     tooltip.style("opacity", 1)
                         .style("left",(event.pageX)+"px")
                         .style("top",(event.pageY)+"px")
-                        .html("Make: "+d.EngineCylinders+"-Cylinder "+d.Make+"; City MPG: "+d.AverageCityMPG+"; Highway MPG: "+d.AverageHighwayMPG+"; Fuel-type: "+d.Fuel);
+                        .html("Model: "+d.EngineCylinders+"-Cylinder "+d.Make+"<br>"+"Avg City MPG: "+d.AverageCityMPG+"<br>"+"Avg Highway MPG: "+d.AverageHighwayMPG+"<br>"+"Fuel-type: "+d.Fuel);
                         console.log(d)
                 })
                 .on ("mouseout", function(i,d) {

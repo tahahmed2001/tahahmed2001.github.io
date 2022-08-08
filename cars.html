@@ -10,7 +10,6 @@
     </head>
     <style> 
         rect {fill: lightblue; stroke: black; }
-        circle {fill: lightblue; stroke: black;} 
         div.tooltip {
             opacity: 0;
             position: absolute;
@@ -20,17 +19,20 @@
             background: lightgray;
             border: 0px;
             pointer-events: none;
+            font-size: 20px;
         }
     </style>
 
     <body onload='init()'>
-        <h1>Number of Cars Made</h1>
-        <p fill="black">This graph shows the number of cars that were manufactured by several different car companies in 2017.</p>
+        <h1>Number of Cars per Brand</h1>
+        <p fill="black">This graph shows the number of cars that were listed in our dataset by each respective automobile manufacturer.</p>
+        <p>(Hover over the bars to see the numbers more easily.)</p>
         <svg width="1200" height="700">
         </svg>
+        <p>Additional charts here:</p>
         <p>
-            <a href="index.html">Scatter Plot</a>
-            <a href="tester.html">Pie Chart</a>
+            [<a href="index.html">Fuel Efficiency</a>]
+            [<a href="tester.html">Fuel Types</a>]
         </p>
         <script>
             async function init() {
